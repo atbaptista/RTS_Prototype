@@ -22,7 +22,18 @@ public class GeorgeWalk : IState
 
     public void Execute()
     {
+        //enable or disable the selection circle
+        if (george.selected.isSelected)
+        {
+            george.GetComponent<LineRenderer>().enabled = true;
+        }
+        else
+        {
+            george.GetComponent<LineRenderer>().enabled = false;
+        }
+
         george.playerNavMeshAgent.SetDestination(george.dest);
+
         //calculate vector from pos to destination
         Vector3 distanceToDest = (Vector3)(george.dest - george.transform.position);
 

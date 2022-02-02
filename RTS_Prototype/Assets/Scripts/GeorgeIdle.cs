@@ -20,6 +20,16 @@ public class GeorgeIdle : IState
 
     public void Execute()
     {
+        //enable or disable the selection circle
+        if (george.selected.isSelected)
+        {
+            george.GetComponent<LineRenderer>().enabled = true;
+        }
+        else
+        {
+            george.GetComponent<LineRenderer>().enabled = false;
+        }
+
         if (george.isDestSet)
         {
             george.georgeMachine.ChangeState(george.walkState);

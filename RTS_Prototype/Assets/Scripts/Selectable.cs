@@ -25,6 +25,8 @@ public class Selectable : MonoBehaviour
         }
 
         line.SetPositions(points);
+
+        //green line
         line.material.color = new Color(0, 255, 0);
     }
 }

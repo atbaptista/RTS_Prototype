@@ -13,6 +13,7 @@ public class GeorgeIdle : IState
 
     public void Enter()
     {
+        //update navmesh, animation, isdestset
         george.playerNavMeshAgent.isStopped = true;
         george.anim.SetBool("isWalking", false);
         george.isDestSet = false;

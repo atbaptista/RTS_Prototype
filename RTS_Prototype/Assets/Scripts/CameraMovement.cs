@@ -48,14 +48,14 @@ public class CameraMovement : MonoBehaviour
             transform.Translate(Vector3.left * Time.deltaTime * scrollSpeed);
         }
 
-        ////scroll up
-        //if (Input.GetAxis("Mouse ScrollWheel") < 0f) 
-        //{
-        //    transform.Translate(Vector3.up * Time.deltaTime * 50);
-        //}
-        //else if (Input.GetAxis("Mouse ScrollWheel") > 0f) 
-        //{
-        //    transform.Translate(Vector3.down * Time.deltaTime * 50);
-        //}
+        //scroll up
+        if (Input.GetAxis("Mouse ScrollWheel") < 0f)
+        {
+            transform.Translate(Vector3.up * Time.deltaTime * 50);
+        }
+        else if (Input.GetAxis("Mouse ScrollWheel") > 0f)
+        {
+            transform.Translate(Vector3.down * Time.deltaTime * 50);
+        }
     }
 }

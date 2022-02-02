@@ -51,7 +51,7 @@ public class Selection : MonoBehaviour
             }
             for (int i = 0; i < prevSelected.Count; i++)
             {
-                prevSelected[i].gameObject.GetComponent<Movement>().isSelected = false;
+                prevSelected[i].gameObject.GetComponent<Selectable>().isSelected = false;
             }
             prevSelected.Clear();
         }
@@ -115,10 +115,34 @@ public class Selection : MonoBehaviour
             //add new selected to prev selected
             foreach (Collider i in newlySelected)
             {
-                if (!i.gameObject.GetComponent<Movement>().isSelected)
+                if (!i.gameObject.GetComponent<Selectable>().isSelected)
                 {
-                    i.gameObject.GetComponent<Movement>().isSelected = true;
+                    i.gameObject.GetComponent<Selectable>().isSelected = true;
                     prevSelected.Add(i);
+                }
+            }
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            //Bit shift the index of the ground layer (8) to get a bit mask
+            int layerMask = 1 << 8;
+
+            //idk need a maxdistance to input layermask
+            float maxDistance = 100f;
+
+            RaycastHit hit;
+
+            //point in game where i click
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+
+            //raycast and only hit things in layer 8 (ground)
+
+            if (Physics.Raycast(ray, out hit, maxDistance, layerMask))
+            {
+                foreach(Collider i in prevSelected)
+                {
+                    i.gameObject.GetComponent<Moveable>().GoTo(hit.point);
                 }
             }
         }

@@ -31,14 +31,18 @@ public class GeorgeAttack : IState
             george.GetComponent<LineRenderer>().enabled = false;
         }
 
-        if (Time.time > lastAttackedAt + george.attackSpeed)
+        if (george.closestEnemy != null && (Time.time > lastAttackedAt + george.attackSpeed))
         {
             Attack();
             lastAttackedAt = Time.time;
         }
 
-        
-        if (george.isDestSet) //change state if a new destination is input
+
+        if (george.closestEnemy.Equals(null)) //if thing died
+        {
+            george.georgeMachine.ChangeState(george.idleState);
+        }
+        else if (george.isDestSet) //change state if a new destination is input
         {
             george.georgeMachine.ChangeState(george.walkState);
         }
@@ -49,10 +53,7 @@ public class GeorgeAttack : IState
             //change to chase state later
             george.georgeMachine.ChangeState(george.idleState);
         }
-        else if (george.closestEnemy.Equals(null)) //if thing died
-        {
-            george.georgeMachine.ChangeState(george.idleState);
-        }
+
     }
 
     public void Exit()
@@ -68,7 +69,7 @@ public class GeorgeAttack : IState
         foreach (Collider i in george.unitsInRange)
         {
             //check type of unit
-            if (i.GetComponent<Selectable>().unitType == Selectable.unitTypes.Dinosaur)
+            if (i != null && i.GetComponent<Selectable>().unitType.Equals(Selectable.unitTypes.Dinosaur))
             {
                 //find closest dinosaur
                 Vector3 distanceBetwixt = i.transform.position - george.transform.position;

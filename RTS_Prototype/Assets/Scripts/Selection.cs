@@ -45,13 +45,16 @@ public class Selection : MonoBehaviour
 
                 //make sure game always has background or something idk
                 selectStart = hit.point;
-                Debug.Log(hit.transform.name);
 
             //clear previously selected objects
             }
             for (int i = 0; i < prevSelected.Count; i++)
             {
-                prevSelected[i].gameObject.GetComponent<Selectable>().isSelected = false;
+                //null check if enemies die while selected
+                if (!prevSelected[i].Equals(null))
+                {
+                    prevSelected[i].gameObject.GetComponent<Selectable>().isSelected = false;
+                }
             }
             prevSelected.Clear();
         }
@@ -142,7 +145,11 @@ public class Selection : MonoBehaviour
             {
                 foreach(Collider i in prevSelected)
                 {
-                    i.gameObject.GetComponent<Moveable>().GoTo(hit.point);
+                    //null check if enemies die while selected
+                    if (!i.Equals(null))
+                    {
+                        i.gameObject.GetComponent<Moveable>().GoTo(hit.point);
+                    }       
                 }
             }
         }

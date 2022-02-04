@@ -35,7 +35,7 @@ public class GeorgeWalk : IState
         george.playerNavMeshAgent.SetDestination(george.dest);
 
         //calculate vector from pos to destination
-        Vector3 distanceToDest = (Vector3)(george.dest - george.transform.position);
+        Vector3 distanceToDest = george.dest - george.transform.position;
 
         //within stopping distance
         if (distanceToDest.magnitude < george.stoppingDistance)

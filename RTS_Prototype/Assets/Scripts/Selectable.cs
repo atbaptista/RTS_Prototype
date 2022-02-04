@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class Selectable : MonoBehaviour
 {
-    public bool isSelected = false;
+    [HideInInspector] public bool isSelected = false;
+    [HideInInspector] public float health;
+    [HideInInspector] public enum unitTypes {Robot, Dinosaur};
+    [HideInInspector] public unitTypes unitType;
 
-    public void DrawCircle(GameObject selected, float radius, float lineWidth)
+
+    public void DrawCircle(GameObject selected, float radius, 
+        float lineWidth, Color color)
     {
         var segments = 360;
         var line = selected.AddComponent<LineRenderer>();
@@ -27,6 +32,6 @@ public class Selectable : MonoBehaviour
         line.SetPositions(points);
 
         //green line
-        line.material.color = new Color(0, 255, 0);
+        line.material.color = color;
     }
 }

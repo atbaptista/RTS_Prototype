@@ -692,11 +692,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 0}
   playerNavMeshAgent: {fileID: 4193982908876552698}
+  anim: {fileID: 0}
   selected: {fileID: 0}
   isDestSet: 0
-  anim: {fileID: 0}
   dest: {x: 0, y: 0, z: 0}
+  unitsInRange: []
+  closestEnemy: {fileID: 0}
+  laserMat: {fileID: 2100000, guid: 4e0e4c211e206db44b1cec99cf64967c, type: 2}
+  detectionRadius: 10
   stoppingDistance: 1.5
+  attackSpeed: 0.5
+  basicAttackDmg: 20
+  health: 100
 --- !u!114 &4193982908876552679
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -710,6 +717,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSelected: 0
+  health: 0
+  unitType: 0
 --- !u!1 &4108644237945210692
 GameObject:
   m_ObjectHideFlags: 0

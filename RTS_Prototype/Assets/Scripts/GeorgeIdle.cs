@@ -31,14 +31,35 @@ public class GeorgeIdle : IState
             george.GetComponent<LineRenderer>().enabled = false;
         }
 
-        if (george.isDestSet)
-        {
-            george.georgeMachine.ChangeState(george.walkState);
-        }
+        ChooseAction();
     }
 
     public void Exit()
     {
         
     }
+
+    private void ChooseAction()
+    {
+        if (george.isDestSet) //check if new destination is set
+        {
+            george.georgeMachine.ChangeState(george.walkState);
+        }
+        else //check if enemies are near
+        {
+            //update the unitsInRange list
+            george.getEnemiesInRange(george.unitsInRange);
+
+            //change state to attack if enemies are detected
+            foreach (Collider i in george.unitsInRange)
+            {
+                if (i.GetComponent<Selectable>().unitType.Equals
+                    (Selectable.unitTypes.Dinosaur))
+                {
+                    george.georgeMachine.ChangeState(george.attackState);
+                }
+            }
+        }
+    }
+
 }

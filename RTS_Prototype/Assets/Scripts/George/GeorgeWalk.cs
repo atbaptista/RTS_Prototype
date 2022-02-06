@@ -23,22 +23,19 @@ public class GeorgeWalk : IState
     public void Execute()
     {
         //enable or disable the selection circle
-        if (george.selected.isSelected)
-        {
-            george.GetComponent<LineRenderer>().enabled = true;
-        }
-        else
-        {
-            george.GetComponent<LineRenderer>().enabled = false;
-        }
+        //george.drawSelectionCircle();
 
         george.playerNavMeshAgent.SetDestination(george.dest);
 
         //calculate vector from pos to destination
         Vector3 distanceToDest = george.dest - george.transform.position;
 
+        if (george.selected.health <= 0)
+        {
+            george.georgeMachine.ChangeState(george.dieState);
+        }
         //within stopping distance
-        if (distanceToDest.magnitude < george.stoppingDistance)
+        else if (distanceToDest.magnitude < george.stoppingDistance)
         {
             george.georgeMachine.ChangeState(george.idleState);
         }
@@ -46,6 +43,7 @@ public class GeorgeWalk : IState
 
     public void Exit()
     {
-                
+        george.playerNavMeshAgent.isStopped = true;
+        george.anim.SetBool("isWalking", false);
     }
 }

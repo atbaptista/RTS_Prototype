@@ -14,22 +14,17 @@ public class GeorgeAttack : IState
 
     public void Enter()
     {
-        george.anim.SetBool("isAttacking", true);
+        george.anim.SetBool("doneAttacking", false);
+        george.anim.SetTrigger("isAttack");
         FindClosestEnemy();
     }
 
     public void Execute()
     {
         FindClosestEnemy();
+
         //enable or disable the selection circle
-        if (george.selected.isSelected)
-        {
-            george.GetComponent<LineRenderer>().enabled = true;
-        }
-        else
-        {
-            george.GetComponent<LineRenderer>().enabled = false;
-        }
+        //george.drawSelectionCircle();
 
         if (george.closestEnemy != null && (Time.time > lastAttackedAt + george.attackSpeed))
         {
@@ -37,8 +32,13 @@ public class GeorgeAttack : IState
             lastAttackedAt = Time.time;
         }
 
-
-        if (george.closestEnemy.Equals(null)) //if thing died
+        if (george.selected.health <= 0)
+        {
+            george.georgeMachine.ChangeState(george.dieState);
+        }
+        else if (george.closestEnemy.Equals(null) || 
+            george.closestEnemy.GetComponent<Selectable>().unitType == 
+            Selectable.unitTypes.Dead) //if thing died
         {
             george.georgeMachine.ChangeState(george.idleState);
         }
@@ -58,7 +58,9 @@ public class GeorgeAttack : IState
 
     public void Exit()
     {
-        george.anim.SetBool("isAttacking", false);
+        george.anim.SetBool("doneAttacking", true);
+        george.anim.ResetTrigger("isAttack");
+        
     }
 
     private void FindClosestEnemy()
@@ -87,7 +89,6 @@ public class GeorgeAttack : IState
         //mighjt need a null check if the enemy dies
         if (george.closestEnemy.GetComponent<Selectable>().health > 0)
         {
-            Debug.Log("pew");
             //look at target
             george.transform.LookAt(george.closestEnemy.transform);
 

@@ -1321,7 +1321,7 @@ Transform:
   m_GameObject: {fileID: 9137959805908793285}
   m_LocalRotation: {x: -0, y: -0.8771747, z: -0, w: 0.48017153}
   m_LocalPosition: {x: 0.4914881, y: 0, z: -18.950663}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 660775672555650529}
   - {fileID: 8456719828790989707}
@@ -1371,7 +1371,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 7
+  m_Speed: 3
   m_Acceleration: 100
   avoidancePriority: 50
   m_AngularSpeed: 2000
@@ -1396,6 +1396,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSelected: 0
+  health: 0
   unitType: 0
 --- !u!114 &8219605703793445483
 MonoBehaviour:
@@ -1412,9 +1413,16 @@ MonoBehaviour:
   enemy1NavMeshAgent: {fileID: 8219605703793445481}
   anim: {fileID: 0}
   selected: {fileID: 0}
-  isDestSet: 0
   dest: {x: 0, y: 0, z: 0}
   unitsInRange: []
   closestEnemy: {fileID: 0}
-  detectionRadius: 5
+  going: 1
+  patrolStart: {fileID: 0}
+  patrolEnd: {fileID: 0}
+  deathDeletionTime: 1.2
+  attackRadius: 2
+  detectionRadius: 10
   stoppingDistance: 0.15
+  basicAttackDmg: 40
+  attackSpeed: 0.55
+  health: 100

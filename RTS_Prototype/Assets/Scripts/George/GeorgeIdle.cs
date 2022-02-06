@@ -14,22 +14,15 @@ public class GeorgeIdle : IState
     public void Enter()
     {
         //update navmesh, animation, isdestset
-        george.playerNavMeshAgent.isStopped = true;
-        george.anim.SetBool("isWalking", false);
+        //george.anim.SetBool("isWalking", false);
+        //george.anim.ResetTrigger("doneAttack");
         george.isDestSet = false;
     }
 
     public void Execute()
     {
         //enable or disable the selection circle
-        if (george.selected.isSelected)
-        {
-            george.GetComponent<LineRenderer>().enabled = true;
-        }
-        else
-        {
-            george.GetComponent<LineRenderer>().enabled = false;
-        }
+        //george.drawSelectionCircle();
 
         ChooseAction();
     }
@@ -41,7 +34,11 @@ public class GeorgeIdle : IState
 
     private void ChooseAction()
     {
-        if (george.isDestSet) //check if new destination is set
+        if (george.selected.health <= 0)
+        {
+            george.georgeMachine.ChangeState(george.dieState);
+        }
+        else if (george.isDestSet) //check if new destination is set
         {
             george.georgeMachine.ChangeState(george.walkState);
         }

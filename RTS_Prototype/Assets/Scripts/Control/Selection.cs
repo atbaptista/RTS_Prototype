@@ -145,8 +145,10 @@ public class Selection : MonoBehaviour
             {
                 foreach(Collider i in prevSelected)
                 {
+                    bool isRobot = i.gameObject.GetComponent<Selectable>().unitType.Equals(Selectable.unitTypes.Robot);
+
                     //null check if enemies die while selected
-                    if (!i.Equals(null))
+                    if (!i.Equals(null) && isRobot)
                     {
                         i.gameObject.GetComponent<Moveable>().GoTo(hit.point);
                     }       

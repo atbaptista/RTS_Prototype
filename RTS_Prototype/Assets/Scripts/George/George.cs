@@ -23,12 +23,14 @@ public class George : MonoBehaviour, Moveable
     public float attackSpeed = 0.5f;
     public float basicAttackDmg = 20f;
     public float health = 100f;
+    public float deathDeletionTime = 1.5f;
 
     //state machine
     [HideInInspector] public StateMachine georgeMachine = new StateMachine();
     [HideInInspector] public GeorgeIdle idleState;
     [HideInInspector] public GeorgeWalk walkState;
     [HideInInspector] public GeorgeAttack attackState;
+    [HideInInspector] public GeorgeDie dieState;
     #endregion header
 
     void Start()
@@ -37,6 +39,7 @@ public class George : MonoBehaviour, Moveable
         idleState = new GeorgeIdle(this);
         walkState = new GeorgeWalk(this);
         attackState = new GeorgeAttack(this);
+        dieState = new GeorgeDie(this);
 
         //get components
         anim = GetComponent<Animator>();
@@ -52,7 +55,15 @@ public class George : MonoBehaviour, Moveable
 
     void Update()
     {
+        Debug.Log(selected.health);
+        drawSelectionCircle();
         georgeMachine.Update();
+    }
+
+
+    public void Die()
+    {
+        Destroy(this.gameObject, deathDeletionTime);
     }
 
     public void GoTo(Vector3 destination)
@@ -80,6 +91,19 @@ public class George : MonoBehaviour, Moveable
         }
     }
 
+    public void drawSelectionCircle()
+    {
+        //enable or disable the selection circle
+        if (selected.isSelected)
+        {
+            GetComponent<LineRenderer>().enabled = true;
+        }
+        else
+        {
+            GetComponent<LineRenderer>().enabled = false;
+        }
+    }
+
 /*    public void Shoot(GameObject target)
     {
         Instantiate(laser, transform.position, Quaternion.identity);
@@ -92,6 +116,9 @@ public class George : MonoBehaviour, Moveable
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, detectionRadius);
         Gizmos.color = Color.green;
-        Gizmos.DrawLine(transform.position, closestEnemy.transform.position);
+        if (closestEnemy != null)
+        {
+            Gizmos.DrawLine(transform.position, closestEnemy.transform.position);
+        }
     }
 }

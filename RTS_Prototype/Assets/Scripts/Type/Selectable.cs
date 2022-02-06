@@ -6,7 +6,7 @@ public class Selectable : MonoBehaviour
 {
     [HideInInspector] public bool isSelected = false;
     [HideInInspector] public float health;
-    [HideInInspector] public enum unitTypes {Robot, Dinosaur};
+    [HideInInspector] public enum unitTypes {Robot, Dinosaur, Dead};
     [HideInInspector] public unitTypes unitType;
 
 

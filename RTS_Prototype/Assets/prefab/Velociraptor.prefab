@@ -1307,7 +1307,7 @@ GameObject:
   - component: {fileID: 8219605703793445483}
   m_Layer: 7
   m_Name: Velociraptor
-  m_TagString: MoveObject
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1423,6 +1423,7 @@ MonoBehaviour:
   attackRadius: 2
   detectionRadius: 10
   stoppingDistance: 0.15
-  basicAttackDmg: 40
+  basicAttackDmg: 50
   attackSpeed: 0.55
+  chaseSpeedIncrease: 6
   health: 100

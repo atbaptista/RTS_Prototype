@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Selection : MonoBehaviour
 {
-    private List<Collider> prevSelected = new List<Collider>();
+    private List<GameObject> prevSelected = new List<GameObject>();
     [SerializeField] private RectTransform boxImage;
 
     [SerializeField] private GameObject boxSelector;
@@ -21,6 +21,7 @@ public class Selection : MonoBehaviour
     {
         //gui stuff
         boxImage.gameObject.SetActive(false);
+        Invoke("SelectEverything", 0.5f);
     }
 
     void Update()
@@ -53,7 +54,7 @@ public class Selection : MonoBehaviour
                 //null check if enemies die while selected
                 if (!prevSelected[i].Equals(null))
                 {
-                    prevSelected[i].gameObject.GetComponent<Selectable>().isSelected = false;
+                    prevSelected[i].GetComponent<Selectable>().isSelected = false;
                 }
             }
             prevSelected.Clear();
@@ -121,13 +122,15 @@ public class Selection : MonoBehaviour
                 if (!i.gameObject.GetComponent<Selectable>().isSelected)
                 {
                     i.gameObject.GetComponent<Selectable>().isSelected = true;
-                    prevSelected.Add(i);
+                    prevSelected.Add(i.gameObject);
                 }
             }
         }
 
         if (Input.GetMouseButtonDown(1))
         {
+            bool isRobot = false;
+
             //Bit shift the index of the ground layer (8) to get a bit mask
             int layerMask = 1 << 8;
 
@@ -143,17 +146,34 @@ public class Selection : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, maxDistance, layerMask))
             {
-                foreach(Collider i in prevSelected)
+                foreach(GameObject i in prevSelected)
                 {
-                    bool isRobot = i.gameObject.GetComponent<Selectable>().unitType.Equals(Selectable.unitTypes.Robot);
-
-                    //null check if enemies die while selected
-                    if (!i.Equals(null) && isRobot)
+                    //null check
+                    if (!i.Equals(null))
                     {
-                        i.gameObject.GetComponent<Moveable>().GoTo(hit.point);
-                    }       
+                        isRobot = i.GetComponent<Selectable>().unitType.Equals(Selectable.unitTypes.Robot);
+
+                        if (isRobot)
+                        {
+                            i.GetComponent<Moveable>().GoTo(hit.point);
+                        }
+                    }
                 }
             }
+        }
+    }
+
+    private void SelectEverything()
+    {
+        //get all things in selectable layermask
+        Collider[] all = Physics.OverlapSphere(cam.transform.position, 1000f, 1 << 7);
+        for (int i = 0; i < all.Length; i++) 
+        {
+            if (all[i].gameObject.GetComponent<Selectable>().unitType == Selectable.unitTypes.Robot)
+            {
+                all[i].gameObject.GetComponent<Selectable>().isSelected = true;
+                prevSelected.Add(all[i].gameObject);
+            }   
         }
     }
 }

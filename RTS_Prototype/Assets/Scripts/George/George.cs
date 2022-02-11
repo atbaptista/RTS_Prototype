@@ -55,7 +55,6 @@ public class George : MonoBehaviour, Moveable
 
     void Update()
     {
-        Debug.Log(selected.health);
         drawSelectionCircle();
         georgeMachine.Update();
     }
@@ -96,6 +95,11 @@ public class George : MonoBehaviour, Moveable
         //enable or disable the selection circle
         if (selected.isSelected)
         {
+            var line = selected.GetComponent<LineRenderer>();
+            if (selected.health <= 50)
+            {
+                line.material.color = new Color(255, 0, 0);
+            }
             GetComponent<LineRenderer>().enabled = true;
         }
         else

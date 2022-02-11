@@ -16,7 +16,7 @@ public class Enemy1Chase : IState
         Debug.Log("chasing");
         enemy1.enemy1NavMeshAgent.isStopped = false;
         enemy1.anim.SetInteger("animState", 2);
-        enemy1.enemy1NavMeshAgent.speed += 3; 
+        enemy1.enemy1NavMeshAgent.speed += enemy1.chaseSpeedIncrease; 
     }
 
     public void Execute()
@@ -28,7 +28,7 @@ public class Enemy1Chase : IState
 
     public void Exit()
     {
-        enemy1.enemy1NavMeshAgent.speed -= 3;
+        enemy1.enemy1NavMeshAgent.speed -= enemy1.chaseSpeedIncrease;
     }
 
 

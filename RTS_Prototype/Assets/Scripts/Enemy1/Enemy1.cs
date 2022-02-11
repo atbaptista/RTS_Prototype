@@ -24,6 +24,7 @@ public class Enemy1 : MonoBehaviour
     public float stoppingDistance = 0.15f;
     public float basicAttackDmg = 40f;
     public float attackSpeed = 1f;
+    public float chaseSpeedIncrease = 5f;
     [SerializeField] private float health = 100f;
 
 
@@ -59,6 +60,7 @@ public class Enemy1 : MonoBehaviour
         //make an empty gameobject and set it's location to where the dino spawns
         patrolStart = new GameObject("patrolStart for " + name);
         patrolStart.transform.position = transform.position;
+        Debug.Log("omegalol!");
 
         //draw red circle, disable it until selection is decided upon
         Color color = new Color(255, 0, 0);

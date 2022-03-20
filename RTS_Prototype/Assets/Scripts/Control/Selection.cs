@@ -26,13 +26,18 @@ public class Selection : MonoBehaviour
 
     void Update()
     {
+        Lmb();
+        RmbMove();
+        
+    }
+
+    private void Lmb() {
         int ignoreUIMask = 1 << 5;
         ignoreUIMask = ~ignoreUIMask;
 
         Collider[] newlySelected;
 
-        if (Input.GetMouseButtonDown(0))
-        {
+        if (Input.GetMouseButtonDown(0)) {
             //mouse start pos
             startPos = Input.mousePosition;
 
@@ -41,37 +46,43 @@ public class Selection : MonoBehaviour
             //point in game where i click
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, ignoreUIMask))
-            {
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, ignoreUIMask)) {
 
                 //make sure game always has background or something idk
                 selectStart = hit.point;
 
-            //clear previously selected objects
+                
             }
-            for (int i = 0; i < prevSelected.Count; i++)
-            {
+
+            //clear previously selected objects
+            for (int i = 0; i < prevSelected.Count; i++) {
                 //null check if enemies die while selected
-                if (!prevSelected[i].Equals(null))
-                {
+                if (!prevSelected[i].Equals(null)) {
                     prevSelected[i].GetComponent<Selectable>().isSelected = false;
                 }
             }
             prevSelected.Clear();
+
+            //if lmb on a robot
+            if (hit.collider.CompareTag("MoveObject") && hit.collider.GetComponent<Selectable>().unitType == Selectable.unitTypes.Robot) {
+                //can add code to check if shift clicking l8er maybe
+                //if not already selected, select it
+                if (!hit.collider.gameObject.GetComponent<Selectable>().isSelected) {
+                    hit.collider.gameObject.GetComponent<Selectable>().isSelected = true;
+                    prevSelected.Add(hit.collider.gameObject);
+                }
+            }
         }
 
-        if (Input.GetMouseButtonUp(0))
-        {
+        if (Input.GetMouseButtonUp(0)) {
             //gui
             boxImage.gameObject.SetActive(false);
         }
 
-        if (Input.GetMouseButton(0))
-        {
+        if (Input.GetMouseButton(0)) {
             //GUI stuff
             //object not already active, make it active
-            if (!boxImage.gameObject.activeInHierarchy)
-            {
+            if (!boxImage.gameObject.activeInHierarchy) {
                 boxImage.gameObject.SetActive(true);
             }
 
@@ -93,8 +104,7 @@ public class Selection : MonoBehaviour
             //selector code
             RaycastHit hit;
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, ignoreUIMask))
-            {
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, ignoreUIMask)) {
                 selectEnd = hit.point;
             }
 
@@ -115,54 +125,51 @@ public class Selection : MonoBehaviour
             //spawn overlapbox to detect everything inside of the mouse click/drag
             newlySelected = Physics.OverlapBox(centerOfOverlap, halfExtents,
                 Quaternion.identity, layerMask);
-            
+
             //add new selected to prev selected
-            foreach (Collider i in newlySelected)
-            {
-                if (!i.gameObject.GetComponent<Selectable>().isSelected)
-                {
+            foreach (Collider i in newlySelected) {
+                //if not already selected, select it
+                if (!i.gameObject.GetComponent<Selectable>().isSelected) {
                     i.gameObject.GetComponent<Selectable>().isSelected = true;
                     prevSelected.Add(i.gameObject);
                 }
             }
         }
+    }
 
-        if (Input.GetMouseButtonDown(1))
-        {
-            bool isRobot = false;
+    private void RmbMove() {
+        if (!Input.GetMouseButtonDown(1)) {
+            return;
+        }
 
-            //Bit shift the index of the ground layer (8) to get a bit mask
-            int layerMask = 1 << 8;
+        bool isRobot = false;
 
-            //idk need a maxdistance to input layermask
-            float maxDistance = 100f;
+        //Bit shift the index of the ground layer (8) to get a bit mask
+        int layerMask = 1 << 8;
 
-            RaycastHit hit;
+        //idk need a maxdistance to input layermask
+        float maxDistance = 100f;
 
-            //point in game where i click
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
 
-            //raycast and only hit things in layer 8 (ground)
+        //point in game where i click
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hit, maxDistance, layerMask))
-            {
-                foreach(GameObject i in prevSelected)
-                {
-                    //null check
-                    if (!i.Equals(null))
-                    {
-                        isRobot = i.GetComponent<Selectable>().unitType.Equals(Selectable.unitTypes.Robot);
+        //raycast and only hit things in layer 8 (ground)
 
-                        if (isRobot)
-                        {
-                            i.GetComponent<Moveable>().GoTo(hit.point);
-                        }
+        if (Physics.Raycast(ray, out hit, maxDistance, layerMask)) {
+            foreach (GameObject i in prevSelected) {
+                //null check
+                if (!i.Equals(null)) {
+                    isRobot = i.GetComponent<Selectable>().unitType.Equals(Selectable.unitTypes.Robot);
+
+                    if (isRobot) {
+                        i.GetComponent<Moveable>().GoTo(hit.point);
                     }
                 }
             }
         }
     }
-
     private void SelectEverything()
     {
         //get all things in selectable layermask
@@ -171,8 +178,11 @@ public class Selection : MonoBehaviour
         {
             if (all[i].gameObject.GetComponent<Selectable>().unitType == Selectable.unitTypes.Robot)
             {
-                all[i].gameObject.GetComponent<Selectable>().isSelected = true;
-                prevSelected.Add(all[i].gameObject);
+                //if not already selected, select it
+                if (!all[i].gameObject.GetComponent<Selectable>().isSelected) {
+                    all[i].gameObject.GetComponent<Selectable>().isSelected = true;
+                    prevSelected.Add(all[i].gameObject);
+                }
             }   
         }
     }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Selection : MonoBehaviour
 {
@@ -15,6 +16,9 @@ public class Selection : MonoBehaviour
     private Vector3 startPos;
     private Vector3 endPos;
 
+    private bool _aPressed;
+    private bool _shiftPressed;
+
     [SerializeField] private Camera cam;
 
     private void Start()
@@ -22,13 +26,32 @@ public class Selection : MonoBehaviour
         //gui stuff
         boxImage.gameObject.SetActive(false);
         Invoke("SelectEverything", 0.5f);
+
+        _aPressed = false;
+        _shiftPressed = false;
     }
 
     void Update()
     {
+        Checks();
+
         Lmb();
         RmbMove();
-        
+    }
+
+    private void Checks() {
+        if (Input.GetKeyDown(KeyCode.A)) {
+            _aPressed = true;
+        }
+        if (Input.GetKeyDown(KeyCode.LeftShift)) {
+            _shiftPressed = true;
+        }
+        if (Input.GetKeyDown(KeyCode.Tab)) {
+            SelectEverything();
+        }
+        if (Input.GetKeyDown(KeyCode.R)) {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
 
     private void Lmb() {
@@ -36,6 +59,7 @@ public class Selection : MonoBehaviour
         ignoreUIMask = ~ignoreUIMask;
 
         Collider[] newlySelected;
+        Selectable.unitTypes selectedType;
 
         if (Input.GetMouseButtonDown(0)) {
             //mouse start pos
@@ -50,22 +74,49 @@ public class Selection : MonoBehaviour
 
                 //make sure game always has background or something idk
                 selectStart = hit.point;
-
-                
             }
 
-            //clear previously selected objects
-            for (int i = 0; i < prevSelected.Count; i++) {
-                //null check if enemies die while selected
-                if (!prevSelected[i].Equals(null)) {
-                    prevSelected[i].GetComponent<Selectable>().isSelected = false;
+            //left click on non moveable object
+            if (hit.collider.gameObject.layer != LayerMask.NameToLayer("Selectable")) {
+                bool isRobot = false;
+
+                //attack move
+                if (_aPressed) {
+                    foreach (GameObject i in prevSelected) {
+                        //null check
+                        if (!i.Equals(null)) {
+                            isRobot = i.GetComponent<Selectable>().unitType.Equals(Selectable.unitTypes.Robot);
+
+                            if (isRobot) {
+                                //IMPLEMENT ATTACK MOVE STATE
+                                print("all attack move");
+                            }
+                        }
+                    }
+                    _aPressed = false;
+                    return;
+                } else {
+                    ClearPrevSelected();
+                    return;
                 }
             }
-            prevSelected.Clear();
+
+            selectedType = hit.collider.GetComponent<Selectable>().unitType;
+            if (_aPressed && selectedType == Selectable.unitTypes.Dinosaur) {
+                //IMPLEMENT ATTACK MOVE STATE
+                //loop thru each thing and change state or something idk
+                print("attack dino!");
+                _aPressed = false;
+                return;
+            }
 
             //if lmb on a robot
-            if (hit.collider.CompareTag("MoveObject") && hit.collider.GetComponent<Selectable>().unitType == Selectable.unitTypes.Robot) {
+            if (hit.collider.CompareTag("MoveObject") && selectedType == Selectable.unitTypes.Robot) {
                 //can add code to check if shift clicking l8er maybe
+
+                //clear previously selected objects
+                ClearPrevSelected();
+
                 //if not already selected, select it
                 if (!hit.collider.gameObject.GetComponent<Selectable>().isSelected) {
                     hit.collider.gameObject.GetComponent<Selectable>().isSelected = true;
@@ -170,6 +221,7 @@ public class Selection : MonoBehaviour
             }
         }
     }
+
     private void SelectEverything()
     {
         //get all things in selectable layermask
@@ -185,5 +237,16 @@ public class Selection : MonoBehaviour
                 }
             }   
         }
+    }
+
+    private void ClearPrevSelected() {
+        //clear previously selected objects
+        for (int i = 0; i < prevSelected.Count; i++) {
+            //null check if enemies die while selected
+            if (!prevSelected[i].Equals(null)) {
+                prevSelected[i].GetComponent<Selectable>().isSelected = false;
+            }
+        }
+        prevSelected.Clear();
     }
 }

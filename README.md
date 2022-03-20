@@ -1,2 +1,2 @@
 # RTS_Prototype
-RTS prototype game made by Alex and Henry
+RTS prototype game made by Alex

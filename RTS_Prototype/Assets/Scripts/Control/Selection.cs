@@ -25,6 +25,11 @@ public class Selection : MonoBehaviour
     public Texture2D AttackCursor;
     private Vector2 _cursorOffset;
 
+    [Header("Command FX")]
+    public GameObject ComFX;
+    public Color AMoveColor;
+    public Color MoveColor;
+
     private void Start()
     {
         //gui stuff
@@ -90,6 +95,12 @@ public class Selection : MonoBehaviour
 
             //lmb pressed and attack move
             if (_aPressed) {
+                //create the command fx
+                Vector3 tempPos = hit.point;
+                tempPos.y = 0;
+                GameObject tempFX = Instantiate(ComFX, tempPos, Quaternion.identity);
+                tempFX.GetComponent<CommandFX>().CircleColor = AMoveColor;
+
                 bool isRobot = false;
                 foreach (GameObject i in prevSelected) {
                     //null check
@@ -214,6 +225,10 @@ public class Selection : MonoBehaviour
         //raycast and only hit things in layer 8 (ground)
 
         if (Physics.Raycast(ray, out hit, maxDistance, layerMask)) {
+            //create the command fx
+            GameObject tempFX = Instantiate(ComFX, hit.point, Quaternion.identity);
+            tempFX.GetComponent<CommandFX>().CircleColor = MoveColor;
+
             foreach (GameObject i in prevSelected) {
                 //null check
                 if (!i.Equals(null)) {

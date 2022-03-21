@@ -4334,6 +4334,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1539144139}
     m_Modifications:
+    - target: {fileID: 8219605703793445481, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
+      propertyPath: m_Speed
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8219605703793445483, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
       propertyPath: patrolEnd
       value: 
@@ -16411,8 +16415,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boxImage: {fileID: 370019532}
-  boxSelector: {fileID: 5289142235423194915, guid: 6899440af3110f64599d95d121921fed, type: 3}
   cam: {fileID: 105328569}
+  SelectCursor: {fileID: 2800000, guid: 0f45821c9378469498c0044ff9068ea2, type: 3}
+  AttackCursor: {fileID: 2800000, guid: 24d21e256b498a944a00e2527ed7618c, type: 3}
+  ComFX: {fileID: 8465051250851502759, guid: ab09a0fc5d6c2ed4cb76233ab6267bd6, type: 3}
+  AMoveColor: {r: 0.6981132, g: 0, b: 0, a: 0}
+  MoveColor: {r: 0, g: 0.2042265, b: 1, a: 0}
 --- !u!1001 &1782399128
 PrefabInstance:
   m_ObjectHideFlags: 0

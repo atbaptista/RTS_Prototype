@@ -16,7 +16,6 @@ public class Enemy1Attack : IState
     {
         //set when to attack
         attackTime = Time.time + enemy1.attackSpeed;
-        Debug.Log("attack state");
 
         //stop movement and update animation state
         enemy1.enemy1NavMeshAgent.isStopped = true;

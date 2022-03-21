@@ -16,7 +16,6 @@ public class GeorgeIdle : IState
         //update navmesh, animation, isdestset
         //george.anim.SetBool("isWalking", false);
         //george.anim.ResetTrigger("doneAttack");
-        george.isDestSet = false;
     }
 
     public void Execute()
@@ -41,6 +40,9 @@ public class GeorgeIdle : IState
         else if (george.isDestSet) //check if new destination is set
         {
             george.georgeMachine.ChangeState(george.walkState);
+        }
+        else if (george.isAMoveOnTarget) { //check if the attack move selected a target
+            george.georgeMachine.ChangeState(george.aMoveTargetState);
         }
         else //check if enemies are near
         {

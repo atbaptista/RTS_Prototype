@@ -5,10 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class Selection : MonoBehaviour
 {
+    [Header("Selection")]
     private List<GameObject> prevSelected = new List<GameObject>();
     [SerializeField] private RectTransform boxImage;
-
-    [SerializeField] private GameObject boxSelector;
 
     private Vector3 selectStart;
     private Vector3 selectEnd;
@@ -21,6 +20,11 @@ public class Selection : MonoBehaviour
 
     [SerializeField] private Camera cam;
 
+    [Header("Cursor")]
+    public Texture2D SelectCursor;
+    public Texture2D AttackCursor;
+    private Vector2 _cursorOffset;
+
     private void Start()
     {
         //gui stuff
@@ -29,6 +33,10 @@ public class Selection : MonoBehaviour
 
         _aPressed = false;
         _shiftPressed = false;
+
+        //cursor 
+        _cursorOffset = new Vector2(SelectCursor.width / 3, SelectCursor.height / 6);
+        Cursor.SetCursor(SelectCursor, _cursorOffset, CursorMode.Auto);
     }
 
     void Update()
@@ -42,15 +50,20 @@ public class Selection : MonoBehaviour
     private void Checks() {
         if (Input.GetKeyDown(KeyCode.A)) {
             _aPressed = true;
-        }
-        if (Input.GetKeyDown(KeyCode.LeftShift)) {
-            _shiftPressed = true;
+            Cursor.SetCursor(AttackCursor, _cursorOffset, CursorMode.Auto);
         }
         if (Input.GetKeyDown(KeyCode.Tab)) {
             SelectEverything();
         }
         if (Input.GetKeyDown(KeyCode.R)) {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
+        //cursor
+        if (!_aPressed) {
+            Cursor.SetCursor(SelectCursor, _cursorOffset, CursorMode.Auto);
+        } else {
+            
         }
     }
 
@@ -59,7 +72,6 @@ public class Selection : MonoBehaviour
         ignoreUIMask = ~ignoreUIMask;
 
         Collider[] newlySelected;
-        Selectable.unitTypes selectedType;
 
         if (Input.GetMouseButtonDown(0)) {
             //mouse start pos
@@ -76,43 +88,30 @@ public class Selection : MonoBehaviour
                 selectStart = hit.point;
             }
 
-            //left click on non moveable object
-            if (hit.collider.gameObject.layer != LayerMask.NameToLayer("Selectable")) {
+            //lmb pressed and attack move
+            if (_aPressed) {
                 bool isRobot = false;
+                foreach (GameObject i in prevSelected) {
+                    //null check
+                    if (!i.Equals(null)) {
+                        isRobot = i.GetComponent<Selectable>().unitType.Equals(Selectable.unitTypes.Robot);
 
-                //attack move
-                if (_aPressed) {
-                    foreach (GameObject i in prevSelected) {
-                        //null check
-                        if (!i.Equals(null)) {
-                            isRobot = i.GetComponent<Selectable>().unitType.Equals(Selectable.unitTypes.Robot);
-
-                            if (isRobot) {
-                                //IMPLEMENT ATTACK MOVE STATE
-                                print("all attack move");
-                            }
+                        if (isRobot) {
+                            //if ever add more units move all the amove checks to moveable component
+                            i.GetComponent<George>().AMove(hit);
                         }
                     }
-                    _aPressed = false;
-                    return;
-                } else {
-                    ClearPrevSelected();
+                }
+            //if lmb on robot while not a-moving
+            } else if (hit.collider.CompareTag("MoveObject") && hit.collider.GetComponent<Selectable>().unitType == Selectable.unitTypes.Robot) {
+                //if shift is held down append robot to selected
+                if (Input.GetKey(KeyCode.LeftShift)) {
+                    if (!hit.collider.gameObject.GetComponent<Selectable>().isSelected) {
+                        hit.collider.gameObject.GetComponent<Selectable>().isSelected = true;
+                        prevSelected.Add(hit.collider.gameObject);
+                    }
                     return;
                 }
-            }
-
-            selectedType = hit.collider.GetComponent<Selectable>().unitType;
-            if (_aPressed && selectedType == Selectable.unitTypes.Dinosaur) {
-                //IMPLEMENT ATTACK MOVE STATE
-                //loop thru each thing and change state or something idk
-                print("attack dino!");
-                _aPressed = false;
-                return;
-            }
-
-            //if lmb on a robot
-            if (hit.collider.CompareTag("MoveObject") && selectedType == Selectable.unitTypes.Robot) {
-                //can add code to check if shift clicking l8er maybe
 
                 //clear previously selected objects
                 ClearPrevSelected();
@@ -122,7 +121,11 @@ public class Selection : MonoBehaviour
                     hit.collider.gameObject.GetComponent<Selectable>().isSelected = true;
                     prevSelected.Add(hit.collider.gameObject);
                 }
+            } else { //lmb on floor
+                
+                ClearPrevSelected();
             }
+            _aPressed = false;
         }
 
         if (Input.GetMouseButtonUp(0)) {
@@ -130,6 +133,7 @@ public class Selection : MonoBehaviour
             boxImage.gameObject.SetActive(false);
         }
 
+        //lmb held down
         if (Input.GetMouseButton(0)) {
             //GUI stuff
             //object not already active, make it active
@@ -192,6 +196,7 @@ public class Selection : MonoBehaviour
         if (!Input.GetMouseButtonDown(1)) {
             return;
         }
+        _aPressed = false;
 
         bool isRobot = false;
 

@@ -15,7 +15,6 @@ public class Enemy1Patrol : IState
 
     public void Enter()
     {
-        Debug.Log("patrol");
         enemy1.anim.SetInteger("animState", 1);
         enemy1.enemy1NavMeshAgent.isStopped = false;
     }

@@ -21,7 +21,11 @@ public class GeorgeAttack : IState
 
     public void Execute()
     {
-        FindClosestEnemy();
+        //find closest target only if is not commanded to attack one already
+        if (!george.isAMoveOnTarget) {
+            FindClosestEnemy();
+        }
+        
 
         //enable or disable the selection circle
         //george.drawSelectionCircle();
@@ -58,6 +62,8 @@ public class GeorgeAttack : IState
 
     public void Exit()
     {
+        george.isAMoveOnTarget = false;
+        george.isAMove = false;
         george.anim.SetBool("doneAttacking", true);
         george.anim.ResetTrigger("isAttack");
         

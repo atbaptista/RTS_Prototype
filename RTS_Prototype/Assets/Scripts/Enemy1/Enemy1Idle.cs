@@ -14,7 +14,6 @@ public class Enemy1Idle : IState
 
     public void Enter()
     {
-        Debug.Log("idle");
         //update navmesh, animation
         enemy1.enemy1NavMeshAgent.isStopped = true;
         enemy1.anim.SetInteger("animState", 0);

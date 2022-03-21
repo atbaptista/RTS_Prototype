@@ -6,24 +6,32 @@ using UnityEngine;
 public class George : MonoBehaviour, Moveable 
 {
     #region header
+
     //components
+    [Header("components")]
     public Camera cam;
     public NavMeshAgent playerNavMeshAgent = null;
     [HideInInspector] public Animator anim;
     [HideInInspector] public Selectable selected;
 
     //variables
-    [HideInInspector] public bool isDestSet = false;
+    [Header("variables")]
     [HideInInspector] public Vector3 dest;
     [HideInInspector] public List<Collider> unitsInRange = new List<Collider>();
     [HideInInspector] public Collider closestEnemy = null;
+    [HideInInspector] public bool isDestSet = false;
     public Material laserMat;
     public float detectionRadius = 5f;
     public float stoppingDistance = 0.15f;
     public float attackSpeed = 0.5f;
     public float basicAttackDmg = 20f;
+    //should prob make this health private
     public float health = 100f;
     public float deathDeletionTime = 1.5f;
+
+    [Header("debug")]
+    public bool isAMove = false;
+    public bool isAMoveOnTarget = false;
 
     //state machine
     [HideInInspector] public StateMachine georgeMachine = new StateMachine();
@@ -31,6 +39,7 @@ public class George : MonoBehaviour, Moveable
     [HideInInspector] public GeorgeWalk walkState;
     [HideInInspector] public GeorgeAttack attackState;
     [HideInInspector] public GeorgeDie dieState;
+    [HideInInspector] public GeorgeAMoveTarget aMoveTargetState;
     #endregion header
 
     void Start()
@@ -40,6 +49,7 @@ public class George : MonoBehaviour, Moveable
         walkState = new GeorgeWalk(this);
         attackState = new GeorgeAttack(this);
         dieState = new GeorgeDie(this);
+        aMoveTargetState = new GeorgeAMoveTarget(this);
 
         //get components
         anim = GetComponent<Animator>();
@@ -69,6 +79,23 @@ public class George : MonoBehaviour, Moveable
     {
         dest = destination;
         isDestSet = true;
+        isAMove = false;
+    }
+
+    public void AMove(RaycastHit hit) {
+        dest = hit.point;
+        //check if input is floor
+        if (hit.collider.gameObject.layer != LayerMask.NameToLayer("Selectable")) {
+            isDestSet = true;
+            isAMove = true;
+            return;
+        }
+        //check if dino
+        if (hit.collider.GetComponent<Selectable>().unitType == Selectable.unitTypes.Dinosaur) {
+            isAMove = true;
+            isAMoveOnTarget = true;
+            closestEnemy = hit.collider;
+        }
     }
 
     public void getEnemiesInRange(List<Collider> enemiesList)
@@ -107,13 +134,6 @@ public class George : MonoBehaviour, Moveable
             GetComponent<LineRenderer>().enabled = false;
         }
     }
-
-/*    public void Shoot(GameObject target)
-    {
-        Instantiate(laser, transform.position, Quaternion.identity);
-        laser.GetComponent<Projectile>().target = target;
-        laser.GetComponent<Projectile>().projectileSpeed = projectileSpeed;
-    }*/
 
     void OnDrawGizmosSelected()
     {

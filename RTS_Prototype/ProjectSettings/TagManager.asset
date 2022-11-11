@@ -6,6 +6,7 @@ TagManager:
   tags:
   - MoveObject
   - Environment
+  - Dino
   layers:
   - Default
   - TransparentFX

@@ -2270,6 +2270,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9137959805908793285, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
+      propertyPath: m_TagString
+      value: Dino
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
 --- !u!1001 &214804830
@@ -4405,6 +4409,10 @@ PrefabInstance:
     - target: {fileID: 9137959805908793285, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9137959805908793285, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
+      propertyPath: m_TagString
+      value: Dino
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
@@ -7384,6 +7392,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9137959805908793285, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
+      propertyPath: m_TagString
+      value: Dino
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
 --- !u!1001 &799258528
@@ -10265,6 +10277,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9137959805908793285, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
+      propertyPath: m_TagString
+      value: Dino
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
 --- !u!1001 &1070894763
@@ -10689,6 +10705,10 @@ PrefabInstance:
     - target: {fileID: 9137959805908793285, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9137959805908793285, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
+      propertyPath: m_TagString
+      value: Dino
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
@@ -12740,6 +12760,10 @@ PrefabInstance:
     - target: {fileID: 9137959805908793285, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9137959805908793285, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
+      propertyPath: m_TagString
+      value: Dino
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
@@ -15034,6 +15058,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9137959805908793285, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
+      propertyPath: m_TagString
+      value: Dino
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
 --- !u!4 &1633090019 stripped
@@ -15415,6 +15443,10 @@ PrefabInstance:
     - target: {fileID: 9137959805908793285, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9137959805908793285, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
+      propertyPath: m_TagString
+      value: Dino
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}

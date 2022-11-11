@@ -292,7 +292,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 215104451}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.5, y: 0, z: 3.4}
+  m_LocalPosition: {x: 14.44, y: 0, z: -16.66}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1539144139}
@@ -441,7 +441,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 341756867}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -140.25581, y: 1.178894, z: -53.746307}
+  m_LocalPosition: {x: -140.25581, y: 70.8, z: -53.746307}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2483,7 +2483,7 @@ MonoBehaviour:
   closestEnemy: {fileID: 0}
   going: 1
   patrolStart: {fileID: 0}
-  patrolEnd: {fileID: 215104451}
+  patrolEnd: {fileID: 0}
   deathDeletionTime: 1.2
   attackRadius: 2
   detectionRadius: 10
@@ -2598,7 +2598,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9137959804760192231}
   m_LocalRotation: {x: -0, y: -0.8771747, z: -0, w: 0.48017153}
-  m_LocalPosition: {x: -2.4400005, y: 0, z: -3.5600014}
+  m_LocalPosition: {x: -1.42, y: 0, z: -7.97}
   m_LocalScale: {x: 0.66666675, y: 0.6666667, z: 0.66666675}
   m_Children:
   - {fileID: 660775673691700931}
@@ -2778,7 +2778,7 @@ GameObject:
   - component: {fileID: 8219605704795277641}
   m_Layer: 7
   m_Name: Velociraptor
-  m_TagString: Untagged
+  m_TagString: Dino
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

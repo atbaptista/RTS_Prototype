@@ -5,7 +5,7 @@ public class ExampleWindow : EditorWindow
 {
     Color color;
 
-    [MenuItem("Window/Colorizer")]
+    [MenuItem("Tools/Colorizer")]
     public static void ShowWindow() {
         GetWindow<ExampleWindow>("Colorizer");
     }

@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy1 : MonoBehaviour
-{
+public abstract class Enemy : MonoBehaviour {
     #region header
     //components
     public NavMeshAgent enemy1NavMeshAgent = null;
@@ -31,32 +30,30 @@ public class Enemy1 : MonoBehaviour
 
     //state machine
     [HideInInspector] public StateMachine enemy1Machine = new StateMachine();
-    [HideInInspector] public Enemy1Idle idleState;
-    [HideInInspector] public Enemy1Chase chaseState;
-    [HideInInspector] public Enemy1Attack attackState;
-    [HideInInspector] public Enemy1Die dieState;
-    [HideInInspector] public Enemy1Patrol patrolState;
+    [HideInInspector] public EnemyIdle idleState;
+    [HideInInspector] public EnemyChase chaseState;
+    [HideInInspector] public EnemyAttack attackState;
+    [HideInInspector] public EnemyDie dieState;
+    [HideInInspector] public EnemyPatrol patrolState;
     #endregion header
 
-    void Start()
-    {
+    void Start() {
         //create states
-        idleState = new Enemy1Idle(this);
-        chaseState = new Enemy1Chase(this);
-        attackState = new Enemy1Attack(this);
-        dieState = new Enemy1Die(this);
-        patrolState = new Enemy1Patrol(this);
+        idleState = new EnemyIdle(this);
+        chaseState = new EnemyChase(this);
+        attackState = new EnemyAttack(this);
+        dieState = new EnemyDie(this);
+        patrolState = new EnemyPatrol(this);
 
         //get components and initialize stuff
         anim = GetComponent<Animator>();
         selected = GetComponent<Selectable>();
         selected.unitType = Selectable.unitTypes.Dinosaur;
         selected.health = health;
-        if (patrolEnd == null)
-        {
+        if (patrolEnd == null) {
             going = false;
         }
-        
+
         //make an empty gameobject and set its location to where the dino spawns
         patrolStart = new GameObject("patrolStart for " + name);
         patrolStart.transform.position = transform.position;
@@ -70,19 +67,16 @@ public class Enemy1 : MonoBehaviour
         enemy1Machine.ChangeState(idleState);
     }
 
-    void Update()
-    {
+    void Update() {
         enemy1Machine.Update();
     }
 
     //can put these two methods within the selectable class
-    public void Die()
-    {
+    public void Die() {
         Destroy(this.gameObject, deathDeletionTime);
     }
 
-    public void getUnitsInRange(List<Collider> unitsList)
-    {
+    public void getUnitsInRange(List<Collider> unitsList) {
         Collider[] newList;
 
         //clear old list
@@ -94,34 +88,27 @@ public class Enemy1 : MonoBehaviour
         //get all objects near 
         newList = Physics.OverlapSphere(transform.position, detectionRadius, layerMask);
 
-        foreach (Collider i in newList)
-        {
+        foreach (Collider i in newList) {
             unitsList.Add(i);
         }
     }
-    public void drawSelectionCircle()
-    {
+    public void drawSelectionCircle() {
         //enable or disable the selection circle
-        if (selected.isSelected)
-        {
+        if (selected.isSelected) {
             GetComponent<LineRenderer>().enabled = true;
-        }
-        else
-        {
+        } else {
             GetComponent<LineRenderer>().enabled = false;
         }
     }
 
-    void OnDrawGizmosSelected()
-    {
+    void OnDrawGizmosSelected() {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, detectionRadius);
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRadius);
 
         Gizmos.color = Color.green;
-        if (closestEnemy != null)
-        {
+        if (closestEnemy != null) {
             Gizmos.DrawLine(transform.position, closestEnemy.transform.position);
         }
     }
